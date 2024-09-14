@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS 
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 
 app = Flask(__name__)
+CORS(app)
 
 # Load and prepare the dataset
 df = pd.read_csv('diabetes_prediction_dataset.csv')
