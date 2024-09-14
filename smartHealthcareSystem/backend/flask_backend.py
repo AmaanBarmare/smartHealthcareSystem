@@ -38,13 +38,10 @@ def predict_diabetes():
         })
         
         # Make the prediction
-        prediction = model.predict(input_data)
+        prediction = model.predict_proba(input_data)[0][1]
         
         # Return the prediction result
-        if prediction == 1:
-            return jsonify({'result': 'high risk'})
-        else:
-            return jsonify({'result': 'low risk'})
+        return jsonify({'result': prediction})
     except Exception as e:
         return jsonify({'error': str(e)})
 

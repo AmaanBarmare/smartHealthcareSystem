@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./HealthFormStyles.module.css"; // CSS file for styling
+import PredictionChart from "../PredictionChart";
 
 const HealthForm = () => {
   const [formData, setFormData] = useState({
@@ -150,7 +151,7 @@ const HealthForm = () => {
         </button>
       </form>
 
-      {result && <h2>Diabetes Risk: {result}</h2>}
+      {result && <PredictionChart predictionData={[{label: "Diabetes", value: result}]} />}
     </div>
   );
 };
