@@ -37,14 +37,15 @@ def predict_diabetes():
             'blood_glucose_level': [data['blood_glucose_level']]
         })
         
+        probability = model.predict_proba(input_data)[0][1]
         # Make the prediction
-        prediction = model.predict(input_data)
-        
+        #prediction = model.predict(input_data)
+        return jsonify({'result': probability})
         # Return the prediction result
-        if prediction == 1:
-            return jsonify({'result': 'high risk'})
-        else:
-            return jsonify({'result': 'low risk'})
+        #if prediction == 1:
+        #    return jsonify({'result': 'high risk'})
+        #else:
+        #    return jsonify({'result': 'low risk'})
     except Exception as e:
         return jsonify({'error': str(e)})
 
