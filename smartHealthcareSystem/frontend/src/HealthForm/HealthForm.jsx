@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./HealthFormStyles.module.css";
+import "./HealthFormStyles.module.css"; // CSS file for styling
 
 const HealthForm = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +22,17 @@ const HealthForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Perform basic validation here (optional)
+    if (
+      !formData.gender ||
+      !formData.age ||
+      !formData.bmi ||
+      !formData.bloodglucose
+    ) {
+      alert("Please fill out all required fields.");
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:5000/predict", {
@@ -59,63 +70,79 @@ const HealthForm = () => {
         }}
       >
         <label htmlFor="gender">Gender:</label>
-        <input
-          type="text"
+        <select
           id="gender"
           name="gender"
           value={formData.gender}
           onChange={handleChange}
           style={{ margin: "5px 0" }}
-        />
+          required
+        >
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
 
         <label htmlFor="age">Age:</label>
         <input
-          type="text"
+          type="number"
           id="age"
           name="age"
           value={formData.age}
           onChange={handleChange}
           style={{ margin: "5px 0" }}
+          required
         />
 
         <label htmlFor="hypertension">Hypertension:</label>
-        <input
-          type="text"
+        <select
           id="hypertension"
           name="hypertension"
           value={formData.hypertension}
           onChange={handleChange}
           style={{ margin: "5px 0" }}
-        />
+          required
+        >
+          <option value="">Select</option>
+          <option value={0}>No</option>
+          <option value={1}>Yes</option>
+        </select>
 
         <label htmlFor="heartdisease">Heart Disease:</label>
-        <input
-          type="text"
+        <select
           id="heartdisease"
           name="heartdisease"
           value={formData.heartdisease}
           onChange={handleChange}
           style={{ margin: "5px 0" }}
-        />
+          required
+        >
+          <option value="">Select</option>
+          <option value={0}>No</option>
+          <option value={1}>Yes</option>
+        </select>
 
         <label htmlFor="bmi">BMI:</label>
         <input
-          type="text"
+          type="number"
+          step="0.01"
           id="bmi"
           name="bmi"
           value={formData.bmi}
           onChange={handleChange}
           style={{ margin: "5px 0" }}
+          required
         />
 
         <label htmlFor="bloodglucose">Blood Glucose Level:</label>
         <input
-          type="text"
+          type="number"
           id="bloodglucose"
           name="bloodglucose"
           value={formData.bloodglucose}
           onChange={handleChange}
           style={{ margin: "5px 0" }}
+          required
         />
 
         <button type="submit" style={{ margin: "10px 0" }}>

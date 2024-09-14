@@ -1,41 +1,58 @@
 .formContainer {
-  padding: 20px;
-  max-width: 500px;
-  margin: 40px auto;
   background-color: #f9f9f9;
-  border-radius: 10px;
+  padding: 20px;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
 }
 
-.formContainer form {
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+form {
   display: flex;
-  flex-direction: column; /* Stack everything vertically */
+  flex-direction: column;
 }
 
-.formContainer label {
+label {
   margin-bottom: 5px;
   font-weight: bold;
+  color: #555;
 }
 
-.formContainer input {
-  margin-bottom: 20px;
+input,
+select {
   padding: 10px;
+  font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  width: 100%; /* Make the input take the full width */
+  border-radius: 4px;
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.formContainer button {
+button {
   padding: 10px;
-  background-color: #4caf50;
+  background-color: #28a745;
   color: white;
+  font-size: 16px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 18px;
+  transition: background-color 0.3s ease;
 }
 
-.formContainer button:hover {
-  background-color: #45a049;
+button:hover {
+  background-color: #218838;
+}
+
+h2 {
+  text-align: center;
+  color: #d9534f;
+  margin-top: 20px;
 }
