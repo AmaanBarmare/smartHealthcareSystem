@@ -151,7 +151,14 @@ const HealthForm = () => {
         </button>
       </form>
 
-      {result && <PredictionChart predictionData={[{label: "Diabetes", value: result, good: false}, {label: "No Diabetes", value: 1.0 - result, good: true}]} />}
+      {result && (
+        <PredictionChart
+          predictionData={[
+            { label: "Diabetes", value: result, good: false },
+            { label: "No Diabetes", value: 1.0 - result, good: true },
+          ]}
+        />
+      )}
     </div>
   );
 };

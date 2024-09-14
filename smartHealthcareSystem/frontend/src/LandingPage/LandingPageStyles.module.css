@@ -1,37 +1,98 @@
 .landingContainer {
-    background-image: url('./assets/landing-background.jpg'); /* Optional background image */
-    background-size: cover;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  background-image: url("./assets/landing-background.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.contentWrapper {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.85
+  ); /* Slight white background for better text contrast */
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+}
+
+.heading {
+  font-family: "Rubik", sans-serif;
+  font-size: 48px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.subheading {
+  font-size: 24px;
+  font-family: "Rubik", sans-serif;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.text {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.primaryButton {
+  padding: 15px 30px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 15px;
+}
+
+.primaryButton:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.secondaryButton {
+  padding: 15px 30px;
+  background-color: #28a745;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.secondaryButton:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: 36px;
   }
-  
-  .landingContainer h1 {
-    font-family: 'Rubik', sans-serif;
-    font-size: 48px;
-    color: #333;
-  }
-  
-  .landingContainer p {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #555;
-  }
-  
-  .landingContainer button {
-    padding: 15px 30px;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    cursor: pointer;
+
+  .subheading {
     font-size: 20px;
-    border-radius: 8px;
   }
-  
-  .landingContainer button:hover {
-    background-color: #0056b3;
+
+  .text {
+    font-size: 16px;
   }
-  
+
+  .primaryButton,
+  .secondaryButton {
+    font-size: 18px;
+    padding: 12px 25px;
+  }
+}
