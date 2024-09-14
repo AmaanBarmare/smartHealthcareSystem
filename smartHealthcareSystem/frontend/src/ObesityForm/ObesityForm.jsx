@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import "./HealthFormStyles.module.css"; // CSS file for styling
+import "./ObesityFormStyles.module.css"; // CSS file for styling
 import PredictionChart from "../PredictionChart/PredictionChart";
 
-const HealthForm = () => {
+const ObesityForm = () => {
   const [formData, setFormData] = useState({
     gender: "",
     age: "",
-    hypertension: "",
-    heartdisease: "",
-    bmi: "",
-    bloodglucose: "",
+    weight: "",
+    height: "",
+    physicalactivitylevel: "",
   });
 
   const [result, setResult] = useState(null);
@@ -28,15 +27,16 @@ const HealthForm = () => {
     if (
       !formData.gender ||
       !formData.age ||
-      !formData.bmi ||
-      !formData.bloodglucose
+      !formData.weight ||
+      !formData.height ||
+      !formData.physicalactivitylevel
     ) {
       alert("Please fill out all required fields.");
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:5000/predict-diabetes", {
+      const response = await fetch("http://localhost:5000/predict-obesity", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,10 +44,10 @@ const HealthForm = () => {
         body: JSON.stringify({
           gender: formData.gender === "Male" ? 1 : 0, // assuming '1' for male, '0' for female
           age: parseInt(formData.age),
-          hypertension: parseInt(formData.hypertension),
-          heart_disease: parseInt(formData.heartdisease),
+          hypertension: parseFloat(formData.weight),
+          heart_disease: parseFloat(formData.height),
           bmi: parseFloat(formData.bmi),
-          blood_glucose_level: parseFloat(formData.bloodglucose),
+          physicalactivitylevel: parseFloat(formData.physicalactivitylevel),
         }),
       });
 
@@ -56,6 +56,20 @@ const HealthForm = () => {
     } catch (error) {
       console.error("Error in submitting the form: ", error);
     }
+  };
+
+  // Function to categorize based on result or BMI
+  const categorizeResult = (result) => {
+    if (result == 3) {
+      return "Obese";
+    } else if (result == 0) {
+      return "Under Weight";
+    } else if (result == 2) {
+      return "Over Weight";
+    } else if (result == 1) {
+      return "Normal Weight";
+    }
+    return "Unknown"; // fallback
   };
 
   return (
@@ -95,52 +109,34 @@ const HealthForm = () => {
           required
         />
 
-        <label htmlFor="hypertension">Hypertension:</label>
-        <select
-          id="hypertension"
-          name="hypertension"
-          value={formData.hypertension}
-          onChange={handleChange}
-          style={{ margin: "5px 0" }}
-          required
-        >
-          <option value="">Select</option>
-          <option value={0}>No</option>
-          <option value={1}>Yes</option>
-        </select>
-
-        <label htmlFor="heartdisease">Heart Disease:</label>
-        <select
-          id="heartdisease"
-          name="heartdisease"
-          value={formData.heartdisease}
-          onChange={handleChange}
-          style={{ margin: "5px 0" }}
-          required
-        >
-          <option value="">Select</option>
-          <option value={0}>No</option>
-          <option value={1}>Yes</option>
-        </select>
-
-        <label htmlFor="bmi">BMI:</label>
+        <label htmlFor="weight">Weight:</label>
         <input
-          type="number"
-          step="0.01"
-          id="bmi"
-          name="bmi"
-          value={formData.bmi}
+          type= "number"
+          id="weight"
+          name="weight"
+          value={formData.weight}
           onChange={handleChange}
           style={{ margin: "5px 0" }}
           required
         />
 
-        <label htmlFor="bloodglucose">Blood Glucose Level:</label>
+        <label htmlFor="height">Height:</label>
+        <input
+          type = "number"
+          id="height"
+          name="height"
+          value={formData.height}
+          onChange={handleChange}
+          style={{ margin: "5px 0" }}
+          required
+        />
+
+        <label htmlFor="physicalactivitylevel">Physical Activity Level:</label>
         <input
           type="number"
-          id="bloodglucose"
-          name="bloodglucose"
-          value={formData.bloodglucose}
+          id="physicalactivitylevel"
+          name="physicalactivitylevel"
+          value={formData.physicalactivitylevel}
           onChange={handleChange}
           style={{ margin: "5px 0" }}
           required
@@ -151,9 +147,14 @@ const HealthForm = () => {
         </button>
       </form>
 
-      {result && <PredictionChart predictionData={[{label: "Diabetes", value: result, good: false}, {label: "No Diabetes", value: 1.0 - result, good: true}]} />}
+      {result !== null && (
+        <div style={{ marginTop: "20px", textAlign: "center" }}>
+          <h2>Prediction Result</h2>
+          <p>{categorizeResult(result)}</p>
+        </div>
+      )}
     </div>
   );
 };
 
-export default HealthForm;
+export default ObesityForm;

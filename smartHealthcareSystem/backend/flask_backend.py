@@ -8,22 +8,37 @@ app = Flask(__name__)
 CORS(app)
 
 # Load and prepare the dataset
-df = pd.read_csv('diabetes_prediction_dataset.csv')
-df.replace({'Male': 1, 'Female': 0, 'Other': 2}, inplace=True)
-selected_features = ['gender', 'age', 'hypertension', 'heart_disease', 'bmi', 'blood_glucose_level', 'diabetes']
-df_filtered = df[selected_features]
-X = df_filtered.drop('diabetes', axis=1)
-y = df_filtered['diabetes']
+dfDiabetes = pd.read_csv('diabetes_prediction_dataset.csv')
+dfDiabetes.replace({'Male': 1, 'Female': 0, 'Other': 2}, inplace=True)
+selected_features_diabetes = ['gender', 'age', 'hypertension', 'heart_disease', 'bmi', 'blood_glucose_level', 'diabetes']
+df_filtered_diabetes = dfDiabetes[selected_features_diabetes]
+X = df_filtered_diabetes.drop('diabetes', axis=1)
+y = df_filtered_diabetes['diabetes']
 
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Initialize and train the model
-model = LogisticRegression(max_iter=1000)
-model.fit(X_train, y_train)
+model_diabetes = LogisticRegression(max_iter=1000)
+model_diabetes.fit(X_train, y_train)
+
+# Load and prepare the dataset
+dfObesity = pd.read_csv('obesity_data.csv')
+dfObesity.replace({'Male': 1, 'Female': 0, "Normal weight": 1, "Overweight": 2, "Obese": 3, "Underweight": 0}, inplace=True)
+selected_features_obesity = ['Age', 'Gender', 'Height', 'Weight', 'BMI', 'PhysicalActivityLevel', 'ObesityCategory']
+df_filtered_obesity = dfObesity[selected_features_obesity]
+X = df_filtered_obesity.drop('ObesityCategory', axis=1)
+y = df_filtered_obesity['ObesityCategory']
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize and train the model
+model_obesity = LogisticRegression(max_iter=1000)
+model_obesity.fit(X_train, y_train)
 
 # API endpoint to get diabetes prediction
-@app.route('/predict', methods=['POST'])
+@app.route('/predict-diabetes', methods=['POST'])
 def predict_diabetes():
     data = request.get_json()  # Get JSON data from request
     try:
@@ -38,7 +53,30 @@ def predict_diabetes():
         })
         
         # Make the prediction
-        prediction = model.predict_proba(input_data)[0][1]
+        prediction = model_diabetes.predict_proba(input_data)[0][1]
+        
+        # Return the prediction result
+        return jsonify({'result': prediction})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+# API endpoint to get obesity prediction
+@app.route('/predict-obesity', methods=['POST'])
+def predict_obesity():
+    data = request.get_json()  # Get JSON data from request
+    try:
+        # Create a DataFrame from the input values
+        input_data = pd.DataFrame({
+            'Gender': [data['gender']],
+            'Age': [data['age']],
+            'Height': [data['height']],
+            'Weight': [data['weight']],
+            'BMI': ([data['weight']]/2.25)*703/(([data['height']]/2.5)**2),
+            'PhysicalActivityLevel': [data['physicalactivitylevel']]
+        })
+        
+        # Make the prediction
+        prediction = model_obesity.predict(input_data)
         
         # Return the prediction result
         return jsonify({'result': prediction})
