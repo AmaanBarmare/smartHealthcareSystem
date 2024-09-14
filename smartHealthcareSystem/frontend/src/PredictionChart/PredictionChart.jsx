@@ -26,7 +26,8 @@ function PredictionChart({predictionData}) {
                             {
                                 label: "Probability",
                                 data: predictionData.map(row => row.value),
-                                backgroundColor: predictionData.map(row => getColorForPercentage(row.value)),
+                                //backgroundColor: predictionData.map(row => getColorForPercentage(row.good ? 1.0 - row.value : row.value)),
+                                backgroundColor: predictionData.map(row => row.good ? getColorForPercentage(0) : getColorForPercentage(1)),
                                 borderColor: predictionData.map(row => "rgb(0, 0, 0)"),
                                 hoverOffset: 32,
                             }
