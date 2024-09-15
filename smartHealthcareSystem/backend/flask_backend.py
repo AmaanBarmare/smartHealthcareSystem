@@ -41,6 +41,20 @@ X_train_o, X_test_o, y_train_o, y_test_o = train_test_split(X, y, test_size=0.2,
 model_obesity = LogisticRegression(max_iter=5000)
 model_obesity.fit(X_train_o, y_train_o)
 
+dfBreastC = pd.read_csv('breast_cancer_data.csv')
+dfBreastC.replace({'M': 1, 'B': 0}, inplace=True)
+selected_features_BreastC = ['radius_mean', 'texture_mean', 'smoothness_mean', 'compactness_mean', 'symmetry_mean', 'diagnosis']
+df_filtered_BreastC = dfBreastC[selected_features_BreastC]
+X = df_filtered_BreastC.drop('diagnosis', axis=1)
+y = df_filtered_BreastC['diagnosis']
+
+# Split the dataset into training and testing sets
+X_train_bc, X_test_bc, y_train_bc, y_test_bc = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize and train the model
+model_breastC = LogisticRegression(max_iter=5000)
+model_breastC.fit(X_train_bc, y_train_bc)
+
 # API endpoint to get diabetes prediction
 @app.route('/predict-diabetes', methods=['POST'])
 def predict_diabetes():
@@ -86,6 +100,27 @@ def predict_obesity():
             
         # Return the prediction result
         return jsonify({'result': str(prediction), 'bmi': str(bmi)})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+@app.route('/predict-breast-cancer', methods=['POST'])
+def predict_breast_cancer():
+    data = request.get_json()  # Get JSON data from request
+    try:
+        # Create a DataFrame from the input values
+        input_data = pd.DataFrame({
+            'radius_mean': [data['radius_mean']], 
+            'texture_mean': [data['texture_mean']],
+            'smoothness_mean': [data['smoothness_mean']], 
+            'compactness_mean': [data['compactness_mean']], 
+            'symmetry_mean': [data['symmetry_mean']], 
+        })
+        
+        # Make the prediction
+        prediction = model_breastC.predict(input_data)[0]
+        
+        # Return the prediction result
+        return jsonify({'result': prediction})
     except Exception as e:
         return jsonify({'error': str(e)})
 

@@ -13,6 +13,10 @@ const LandingPage = () => {
     navigate("/obesity-form");
   };
 
+  const breastButton = () => {
+    navigate("/breast-form");
+  };
+
   const graphsButton = () => {
     navigate("/graphs");
   };
@@ -26,11 +30,17 @@ const LandingPage = () => {
           Predict the risk of diabetes with our advanced health prediction tool.
         </p>
         <button className={styles.primaryButton} onClick={handleStart}>
-          Diabetes Prediction Form
+          Diabetes Prediction
         </button>
         <p className={styles.text}>Learn more about your obesity status.</p>
         <button className={styles.secondaryButton} onClick={obesityButton}>
-          Obesity Status Form
+          Obesity Status
+        </button>
+        <p className={styles.text}>
+          Predicting which type of breast cancer you have
+        </p>
+        <button className={styles.secondaryButton} onClick={breastButton}>
+          Breast Cancer
         </button>
         <p className={styles.text}>
           Look at our plotted linear regression best fit line graphs.
