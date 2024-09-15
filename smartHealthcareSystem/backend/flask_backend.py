@@ -19,7 +19,7 @@ y = df_filtered_diabetes['diabetes']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Initialize and train the model
-model_diabetes = LogisticRegression(max_iter=1000)
+model_diabetes = LogisticRegression(max_iter=5000)
 model_diabetes.fit(X_train, y_train)
 
 # Load and prepare the dataset
@@ -34,7 +34,7 @@ y = df_filtered_obesity['ObesityCategory']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Initialize and train the model
-model_obesity = LogisticRegression(max_iter=1000)
+model_obesity = LogisticRegression(max_iter=5000)
 model_obesity.fit(X_train, y_train)
 
 # API endpoint to get diabetes prediction
@@ -63,23 +63,25 @@ def predict_diabetes():
 # API endpoint to get obesity prediction
 @app.route('/predict-obesity', methods=['POST'])
 def predict_obesity():
-    data = request.get_json()  # Get JSON data from request
+    data = request.get_json() # Get JSON data from request
     try:
+        bmi = (data['weight']*2.20462)*703/((data['height']*0.393701)**2)
+        
         # Create a DataFrame from the input values
         input_data = pd.DataFrame({
-            'Gender': [data['gender']],
             'Age': [data['age']],
+            'Gender': [data['gender']],
             'Height': [data['height']],
             'Weight': [data['weight']],
-            'BMI': ([data['weight']]/2.25)*703/(([data['height']]/2.5)**2),
+            'BMI': [bmi],
             'PhysicalActivityLevel': [data['physicalactivitylevel']]
         })
         
         # Make the prediction
-        prediction = model_obesity.predict(input_data)
-        
+        prediction = model_obesity.predict(input_data)[0]
+            
         # Return the prediction result
-        return jsonify({'result': prediction})
+        return jsonify({'result': str(prediction), 'bmi': str(bmi)})
     except Exception as e:
         return jsonify({'error': str(e)})
 

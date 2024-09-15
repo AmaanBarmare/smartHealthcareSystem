@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ObesityFormStyles.module.css"; // CSS file for styling
-import PredictionChart from "../PredictionChart/PredictionChart";
+import ObesityChart from "../ObesityChart/ObesityChart";
 
 const ObesityForm = () => {
   const [formData, setFormData] = useState({
@@ -44,15 +44,15 @@ const ObesityForm = () => {
         body: JSON.stringify({
           gender: formData.gender === "Male" ? 1 : 0, // assuming '1' for male, '0' for female
           age: parseInt(formData.age),
-          hypertension: parseFloat(formData.weight),
-          heart_disease: parseFloat(formData.height),
+          weight: parseFloat(formData.weight),
+          height: parseFloat(formData.height),
           bmi: parseFloat(formData.bmi),
           physicalactivitylevel: parseFloat(formData.physicalactivitylevel),
         }),
       });
 
       const data = await response.json();
-      setResult(data.result);
+      setResult(data);
     } catch (error) {
       console.error("Error in submitting the form: ", error);
     }
@@ -60,6 +60,8 @@ const ObesityForm = () => {
 
   // Function to categorize based on result or BMI
   const categorizeResult = (result) => {
+    console.log(result);
+
     if (result == 3) {
       return "Obese";
     } else if (result == 0) {
@@ -147,10 +149,12 @@ const ObesityForm = () => {
         </button>
       </form>
 
-      {result !== null && (
+      {result && (
         <div style={{ marginTop: "20px", textAlign: "center" }}>
           <h2>Prediction Result</h2>
-          <p>{categorizeResult(result)}</p>
+          <p>{categorizeResult(result.result)}</p>
+          <p>BMI: {parseFloat(result.bmi).toFixed(2)}</p>
+          <ObesityChart bmi={result.bmi} />
         </div>
       )}
     </div>
