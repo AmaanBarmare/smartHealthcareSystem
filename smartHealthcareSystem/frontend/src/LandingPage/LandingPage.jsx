@@ -37,7 +37,7 @@ const LandingPage = () => {
           Obesity Status
         </button>
         <p className={styles.text}>
-          Predicting which type of breast cancer you have
+          Predicting which type of breast cancer you have.
         </p>
         <button className={styles.secondaryButton} onClick={breastButton}>
           Breast Cancer

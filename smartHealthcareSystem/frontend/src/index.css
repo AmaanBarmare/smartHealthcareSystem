@@ -1,0 +1,21 @@
+/* Apply a vibrant background to the entire page */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    #a0f8ec 0%,
+    #9df3fe 100%
+  ); /* Colorful gradient background */
+  font-family: "Rubik", sans-serif;
+}
+
+/* Ensure the landing container centers vertically */
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}

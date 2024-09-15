@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./BreastFormStyles.module.css"; // CSS file for styling
-import PredictionChart from "../PredictionChart/PredictionChart"
+import PredictionChart from "../PredictionChart/PredictionChart";
 
 const BreastForm = () => {
   const [formData, setFormData] = useState({
@@ -84,13 +84,16 @@ const BreastForm = () => {
           margin: "0 auto",
         }}
       >
-        <label htmlFor="radius_mean">Radius mean:</label>
+        <label htmlFor="radius_mean">Radius mean (mm):</label>
         <input
           type="number"
           id="radius_mean"
           name="radius_mean"
           value={formData.radius_mean}
           onChange={handleChange}
+          min="1"
+          max="70"
+          step="0.1"
           style={{ margin: "5px 0" }}
           required
         />
@@ -102,6 +105,9 @@ const BreastForm = () => {
           name="texture_mean"
           value={formData.texture_mean}
           onChange={handleChange}
+          min="10"
+          max="100"
+          step="0.1"
           style={{ margin: "5px 0" }}
           required
         />
@@ -113,6 +119,9 @@ const BreastForm = () => {
           name="smoothness_mean"
           value={formData.smoothness_mean}
           onChange={handleChange}
+          min="0.05"
+          max="0.30"
+          step="0.01"
           style={{ margin: "5px 0" }}
           required
         />
@@ -124,6 +133,9 @@ const BreastForm = () => {
           name="compactness_mean"
           value={formData.compactness_mean}
           onChange={handleChange}
+          min="0.02" // Minimum value
+          max="0.50" // Maximum value
+          step="0.01" // Allows small decimal precision
           style={{ margin: "5px 0" }}
           required
         />
@@ -135,6 +147,9 @@ const BreastForm = () => {
           name="symmetry_mean"
           value={formData.symmetry_mean}
           onChange={handleChange}
+          min="0.1"
+          max="0.5"
+          step="0.01"
           style={{ margin: "5px 0" }}
           required
         />
@@ -145,11 +160,13 @@ const BreastForm = () => {
       </form>
 
       {result && (
-        <div> 
-          <PredictionChart predictionData={[
-            {label: "Benign", value: 1.0 - result, good: true},
-            {label: "Malignant", value: result, good: false}
-          ]} />
+        <div>
+          <PredictionChart
+            predictionData={[
+              { label: "Benign", value: 1.0 - result, good: true },
+              { label: "Malignant", value: result, good: false },
+            ]}
+          />
         </div>
       )}
     </div>

@@ -91,6 +91,8 @@ const HealthForm = () => {
           name="age"
           value={formData.age}
           onChange={handleChange}
+          min="0"
+          max="120"
           style={{ margin: "5px 0" }}
           required
         />
@@ -131,6 +133,8 @@ const HealthForm = () => {
           name="bmi"
           value={formData.bmi}
           onChange={handleChange}
+          min="10"
+          max="80"
           style={{ margin: "5px 0" }}
           required
         />
@@ -142,6 +146,9 @@ const HealthForm = () => {
           name="bloodglucose"
           value={formData.bloodglucose}
           onChange={handleChange}
+          min="30"
+          max="600" // Practical upper limit
+          step="1"
           style={{ margin: "5px 0" }}
           required
         />

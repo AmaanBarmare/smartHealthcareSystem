@@ -107,28 +107,36 @@ const ObesityForm = () => {
           name="age"
           value={formData.age}
           onChange={handleChange}
+          min="0"
+          max="120"
           style={{ margin: "5px 0" }}
           required
         />
 
         <label htmlFor="weight">Weight:</label>
         <input
-          type= "number"
+          type="number"
           id="weight"
           name="weight"
           value={formData.weight}
           onChange={handleChange}
+          min="0"
+          max="400"
+          step="0.1"
           style={{ margin: "5px 0" }}
           required
         />
 
-        <label htmlFor="height">Height:</label>
+        <label htmlFor="height">Height (cm):</label>
         <input
-          type = "number"
+          type="number"
           id="height"
           name="height"
           value={formData.height}
           onChange={handleChange}
+          min="100"
+          max="250"
+          step="0.1"
           style={{ margin: "5px 0" }}
           required
         />
@@ -140,6 +148,8 @@ const ObesityForm = () => {
           name="physicalactivitylevel"
           value={formData.physicalactivitylevel}
           onChange={handleChange}
+          min="0"
+          max="5"
           style={{ margin: "5px 0" }}
           required
         />
