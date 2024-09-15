@@ -7,9 +7,11 @@ from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
 import io
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from matplotlib.gridspec import GridSpec
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
 
 # Load and prepare the dataset
 dfDiabetes = pd.read_csv('diabetes_prediction_dataset.csv')
@@ -168,27 +170,33 @@ def get_model_plot_obesity():
 @app.route('/get_model_plot_diabetes', methods=['GET'])
 def get_model_plot_diabetes():
     # Create a plot with multiple features against Obesity
-    fig, axs = plt.subplots(2, 2, figsize=(10, 8))  # 2x2 subplot grid
+    fig = plt.figure(figsize=(12, 8))
+
+    # Create GridSpec layout with 2 rows and 2 columns
+    gs = GridSpec(2, 2, figure=fig)
+
+    # Define 3 subplots and leave the 4th one empty
+    ax1 = fig.add_subplot(gs[0, 0])  # Top left
+    ax2 = fig.add_subplot(gs[0, 1])  # Top right
+    ax3 = fig.add_subplot(gs[1, :])  # Full-width on the bottom row
 
     # Scatter plot for Age vs Obesity
-    axs[0, 0].scatter(X_test_d['age'], y_test_d, color='blue', label='Data Points')
-    axs[0, 0].set_xlabel('Age')
-    axs[0, 0].set_ylabel('Diabetes Category')
-    axs[0, 0].set_title('Age vs Diabetes Category')
+    ax1.scatter(X_test_d['age'], y_test_d, color='blue', label='Data Points')
+    ax1.set_xlabel('Age')
+    ax1.set_ylabel('Diabetes Category')
+    ax1.set_title('Age vs Diabetes Category')
 
     # Scatter plot for BMI vs Obesity
-    axs[0, 1].scatter(X_test_d['bmi'], y_test_d, color='green', label='Data Points')
-    axs[0, 1].set_xlabel('BMI')
-    axs[0, 1].set_ylabel('Diabetes Category')
-    axs[0, 1].set_title('BMI vs Diabetes Category')
+    ax2.scatter(X_test_d['bmi'], y_test_d, color='green', label='Data Points')
+    ax2.set_xlabel('BMI')
+    ax2.set_ylabel('Diabetes Category')
+    ax2.set_title('BMI vs Diabetes Category')
 
     # Scatter plot for Weight vs Obesity
-    axs[1, 0].scatter(X_test_d['blood_glucose'], y_test_d, color='red', label='Data Points')
-    axs[1, 0].set_xlabel('Blood Glucose')
-    axs[1, 0].set_ylabel('Diabetes Category')
-    axs[1, 0].set_title('Blood Glucose vs Diabetes Category')
-
-    axs[1,1].axis('off')
+    ax3.scatter(X_test_d['blood_glucose_level'], y_test_d, color='red', label='Data Points')
+    ax3.set_xlabel('Blood Glucose Level')
+    ax3.set_ylabel('Diabetes Category')
+    ax3.set_title('Blood Glucose Level vs Diabetes Category')
 
     # Adjust layout to avoid overlap
     plt.tight_layout()
@@ -200,6 +208,81 @@ def get_model_plot_diabetes():
 
     # Return the image as a response
     return send_file(png_image, mimetype='image/png')
+
+@app.route('/get_model_plot_bc', methods=['GET'])
+def get_model_plot_breast_cancer():
+    # Create a plot with multiple features against Obesity
+    fig = plt.figure(figsize=(12, 8))
+
+    # Create GridSpec layout with 2 rows and 2 columns
+    gs = GridSpec(3, 2, figure=fig)
+
+    # Define 3 subplots and leave the 4th one empty
+    ax1 = fig.add_subplot(gs[0, 0])  # Top left
+    ax2 = fig.add_subplot(gs[0, 1])  # Top right
+    ax3 = fig.add_subplot(gs[1, 0])  # Top left
+    ax4 = fig.add_subplot(gs[1, 1])  # Top right
+    ax5 = fig.add_subplot(gs[2, :])  # Full-width on the bottom row
+
+    # Scatter plot for Age vs Obesity
+    ax1.scatter(X_test_bc['radius_mean'], y_test_bc, color='blue', label='Data Points')
+    ax1.set_xlabel('Radius Mean')
+    ax1.set_ylabel('Breast Cancer Category')
+    ax1.set_title('Radius Mean vs Breast Cancer Category')
+
+    # Scatter plot for BMI vs Obesity
+    ax2.scatter(X_test_bc['texture_mean'], y_test_bc, color='green', label='Data Points')
+    ax2.set_xlabel('Texture Mean')
+    ax2.set_ylabel('Breast Cancer Category')
+    ax2.set_title('Texture Mean vs Breast Cancer Category')
+
+    # Scatter plot for Weight vs Obesity
+    ax3.scatter(X_test_bc['compactness_mean'], y_test_bc, color='red', label='Data Points')
+    ax3.set_xlabel('Compactness Mean')
+    ax3.set_ylabel('Breast Cancer Category')
+    ax3.set_title('Compactness Mean vs Breast Cancer Category')
+
+    ax4.scatter(X_test_bc['smoothness_mean'], y_test_bc, color='green', label='Data Points')
+    ax4.set_xlabel('Smoothness Mean')
+    ax4.set_ylabel('Breast Cancer Category')
+    ax4.set_title('Smoothness Mean vs Breast Cancer Category')
+
+    # Scatter plot for Weight vs Obesity
+    ax5.scatter(X_test_bc['symmetry_mean'], y_test_bc, color='red', label='Data Points')
+    ax5.set_xlabel('Symmetry Mean')
+    ax5.set_ylabel('Breast Cancer Category')
+    ax5.set_title('Symmetry Mean vs Breast Cancer Category')
+
+    # Adjust layout to avoid overlap
+    plt.tight_layout()
+
+    # Convert plot to PNG image in memory
+    png_image = io.BytesIO()
+    FigureCanvas(fig).print_png(png_image)
+    png_image.seek(0)
+
+    # Return the image as a response
+    return send_file(png_image, mimetype='image/png')
+
+@app.after_request
+def apply_cors(response):
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
+
+@app.route('/accuracy_score', methods=['GET'])
+def accuracy_d():
+    try:
+        y_pred = model_diabetes.predict(X_test_d)
+        accuracy = model_diabetes.accuracy_score(y_test_d, y_pred)
+        
+        # Return the prediction result
+        return accuracy
+    except Exception as e:
+        print('you fuckin dumbass: ' + str(e))
+        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
     app.run(debug=True)

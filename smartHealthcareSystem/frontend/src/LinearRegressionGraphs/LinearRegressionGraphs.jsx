@@ -29,26 +29,48 @@ const LinearRegressionGraphs = () => {
         })
         .catch((error) => console.error("Error fetching model plot:", error));
     }, []);
-  
+
+    const [breastImageSrc, setBreastImageSrc] = useState(null);
+
+    // Fetch the model plot from the backend
+    useEffect(() => {
+      fetch("http://localhost:5000/get_model_plot_bc")
+        .then((response) => response.blob())
+        .then((blob) => {
+          // Create an object URL for the image
+          const imageUrl = URL.createObjectURL(blob);
+          setBreastImageSrc(imageUrl);
+        })
+        .catch((error) => console.error("Error fetching model plot:", error));
+    }, []);
+
     return (
       <div>
         <h1>Linear Regression Model Plot</h1>
         <h2>Obesity Linear Regression Model Graphs</h2>
         <div className={styles.chartContainer}>
-            {obesityImageSrc ? (
+          {obesityImageSrc ? (
             <img src={obesityImageSrc} alt={"Obesity Model Plot"} />
             ) : (
             <p>Loading first plot...</p>
-            )}
+          )}
         </div>
-        {/* <h2>Diabetes Linear Regression Model Graphs</h2>
+        <h2>Diabetes Prediction Model Accuracy</h2>
         <div className={styles.chartContainer}>
-        {diabetesImageSrc ? (
-          <img src={diabetesImageSrc} alt={"Diabetes Model Plot"} />
-        ) : (
-          <p>Loading second plot...</p>
-        )}
-        </div> */}
+          {diabetesImageSrc ? (
+            <img src={diabetesImageSrc} alt={"Diabetes Model Plot"} />
+            ) : (
+            <p>Loading second plot...</p>
+          )}
+        </div>
+        <h2>Breast Cancer Prediction Model Accuracy</h2>
+        <div className={styles.chartContainer}>
+          {breastImageSrc ? (
+            <img src={breastImageSrc} alt={"Breast Cancer Model Plot"} />
+            ) : (
+            <p>Loading third plot...</p>
+          )}
+        </div>
       </div>
     );
 };

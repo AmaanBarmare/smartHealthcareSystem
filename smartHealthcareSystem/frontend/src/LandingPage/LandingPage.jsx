@@ -39,13 +39,13 @@ const LandingPage = () => {
         <p className={styles.text}>
           Predicting which type of breast cancer you have.
         </p>
-        <button className={styles.secondaryButton} onClick={breastButton}>
+        <button className={styles.primaryButton} onClick={breastButton}>
           Breast Cancer
         </button>
         <p className={styles.text}>
           Look at our plotted linear regression best fit line graphs.
         </p>
-        <button className={styles.primaryButton} onClick={graphsButton}>
+        <button className={styles.secondaryButton} onClick={graphsButton}>
           Graphs
         </button>
       </div>
