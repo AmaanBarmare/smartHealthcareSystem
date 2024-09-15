@@ -13,6 +13,10 @@ const LandingPage = () => {
     navigate("/obesity-form");
   };
 
+  const graphsButton = () => {
+    navigate("/graphs");
+  };
+
   return (
     <div className={styles.landingContainer}>
       <div className={styles.contentWrapper}>
@@ -27,6 +31,12 @@ const LandingPage = () => {
         <p className={styles.text}>Learn more about your obesity status.</p>
         <button className={styles.secondaryButton} onClick={obesityButton}>
           Obesity Status Form
+        </button>
+        <p className={styles.text}>
+          Look at our plotted linear regression best fit line graphs.
+        </p>
+        <button className={styles.primaryButton} onClick={graphsButton}>
+          Graphs
         </button>
       </div>
     </div>
