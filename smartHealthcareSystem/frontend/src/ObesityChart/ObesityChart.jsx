@@ -96,7 +96,7 @@ function ObesityChart({bmi}) {
                                     type: 'point',
                                     xValue: 3 * (bmi - 18.75) / 11.25,
                                     yValue: 0,
-                                    backgroundColor: 'rgba(255, 99, 132, 0.25)',
+                                    backgroundColor: 'rgba(35, 35, 35, 0.25)',
                                     radius: 16
                                 }
                             }

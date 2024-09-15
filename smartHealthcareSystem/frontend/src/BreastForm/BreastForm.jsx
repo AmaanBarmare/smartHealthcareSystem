@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./BreastFormStyles.module.css"; // CSS file for styling
+import BoobChart from "../BoobChart/BoobChart"
 
 const BreastForm = () => {
   const [formData, setFormData] = useState({
@@ -53,7 +54,7 @@ const BreastForm = () => {
       );
 
       const data = await response.json();
-      setResult(data);
+      setResult(data.result);
     } catch (error) {
       console.error("Error in submitting the form: ", error);
     }
@@ -144,12 +145,11 @@ const BreastForm = () => {
       </form>
 
       {result && (
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <h2>Prediction Result</h2>
-          <p>{result}</p>
-          {/* <p>{categorizeResult(result.result)}</p>
-          <p>BMI: {parseFloat(result.bmi).toFixed(2)}</p>
-          <ObesityChart bmi={result.bmi} /> */}
+        <div> 
+          <BoobChart predictionData={[
+            {label: "Benign", value: 1.0 - result, good: true},
+            {label: "Malignant", value: result, good: false}
+          ]} />
         </div>
       )}
     </div>

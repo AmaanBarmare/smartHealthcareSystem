@@ -117,11 +117,12 @@ def predict_breast_cancer():
         })
         
         # Make the prediction
-        prediction = model_breastC.predict(input_data)[0]
+        prediction = model_breastC.predict_proba(input_data)[0][1]
         
         # Return the prediction result
         return jsonify({'result': prediction})
     except Exception as e:
+        print('you fuckin dumbass: ' + str(e))
         return jsonify({'error': str(e)})
 
 @app.route('/get_model_plot_obesity', methods=['GET'])
