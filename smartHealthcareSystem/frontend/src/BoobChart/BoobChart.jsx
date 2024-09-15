@@ -79,7 +79,7 @@ function BoobChart({predictionData}) {
         }
     };
 
-    const style = {width:"500px", height:"500px"};
+    const style = {width:"200px", height:"200px"};
 
 
     return (

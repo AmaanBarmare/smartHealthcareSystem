@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./BreastFormStyles.module.css"; // CSS file for styling
-import BoobChart from "../BoobChart/BoobChart"
+import PredictionChart from "../PredictionChart/PredictionChart"
 
 const BreastForm = () => {
   const [formData, setFormData] = useState({
@@ -146,7 +146,7 @@ const BreastForm = () => {
 
       {result && (
         <div> 
-          <BoobChart predictionData={[
+          <PredictionChart predictionData={[
             {label: "Benign", value: 1.0 - result, good: true},
             {label: "Malignant", value: result, good: false}
           ]} />
